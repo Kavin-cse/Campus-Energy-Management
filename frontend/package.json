@@ -18,7 +18,8 @@
     "recharts": "^2.12.7",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
-    "sonner": "^1.7.4"
+    "sonner": "^1.7.4",
+    "firebase": "^10.12.2"
   },
   "devDependencies": {
     "@types/react": "^18.3.5",

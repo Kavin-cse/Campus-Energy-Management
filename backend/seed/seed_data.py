@@ -1,7 +1,7 @@
 from datetime import date, time, timedelta
 from sqlalchemy.orm import Session
-from ..database import SessionLocal, init_db
-from ..models import Room, RoomType, ElectricityReading, Settings, Recommendation, RecommendationStatus
+from app.database import SessionLocal, init_db
+from app.models import Room, RoomType, ElectricityReading, Settings, Recommendation, RecommendationStatus
 import random
 
 ROOMS = [

@@ -16,6 +16,62 @@ class RecommendationStatus(str, Enum):
     REVIEWED = "reviewed"
     RESOLVED = "resolved"
 
+class IoTDeviceType(str, Enum):
+    CLASSROOM = "classroom"
+    LAB_CAMERA = "lab_camera"
+
+class IoTDeviceMode(str, Enum):
+    SIMULATED = "simulated"
+    REAL = "real"
+
+class IoTDeviceStatus(str, Enum):
+    ONLINE = "online"
+    OFFLINE = "offline"
+
+# IoT Device schemas
+class IoTDeviceBase(BaseModel):
+    id: str = Field(..., min_length=1, max_length=100)
+    room_id: int
+    device_type: IoTDeviceType
+    mode: IoTDeviceMode = IoTDeviceMode.SIMULATED
+    status: IoTDeviceStatus = IoTDeviceStatus.OFFLINE
+
+class IoTDeviceCreate(IoTDeviceBase):
+    pass
+
+class IoTDeviceResponse(IoTDeviceBase):
+    last_seen: Optional[datetime] = None
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+class IoTSensorPayload(BaseModel):
+    deviceId: str
+    roomId: str
+    timestamp: datetime
+    pirMotion: Optional[bool] = None
+    ultrasonicDistanceA: Optional[float] = None
+    ultrasonicDistanceB: Optional[float] = None
+    entryEvent: Optional[bool] = None
+    exitEvent: Optional[bool] = None
+    occupancy: Optional[int] = None
+    powerWatts: Optional[float] = None
+    energyKwh: Optional[float] = None
+
+class IoTSensorReading(BaseModel):
+    deviceId: str
+    roomId: int
+    timestamp: datetime
+    occupancy: int
+    powerWatts: Optional[float] = None
+    energyKwh: Optional[float] = None
+    motionDetected: Optional[bool] = None
+    entryEvent: Optional[bool] = None
+    exitEvent: Optional[bool] = None
+    dataMode: str
+    source: str
+
 # Room schemas
 class RoomBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)

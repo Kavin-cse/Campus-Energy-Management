@@ -18,6 +18,18 @@ class RecommendationStatus(str, enum.Enum):
     REVIEWED = "reviewed"
     RESOLVED = "resolved"
 
+class IoTDeviceType(str, enum.Enum):
+    CLASSROOM = "classroom"
+    LAB_CAMERA = "lab_camera"
+
+class IoTDeviceMode(str, enum.Enum):
+    SIMULATED = "simulated"
+    REAL = "real"
+
+class IoTDeviceStatus(str, enum.Enum):
+    ONLINE = "online"
+    OFFLINE = "offline"
+
 class Room(Base):
     __tablename__ = "rooms"
     
@@ -32,6 +44,7 @@ class Room(Base):
     
     readings = relationship("ElectricityReading", back_populates="room", cascade="all, delete-orphan")
     recommendations = relationship("Recommendation", back_populates="room", cascade="all, delete-orphan")
+    devices = relationship("IoTDevice", back_populates="room", cascade="all, delete-orphan")
     
     def __repr__(self):
         return f"<Room {self.name} ({self.building})>"
@@ -89,3 +102,19 @@ class Settings(Base):
     
     def __repr__(self):
         return f"<Settings campus={self.campus_name} tariff={self.tariff_per_kwh}>"
+
+class IoTDevice(Base):
+    __tablename__ = "iot_devices"
+    
+    id = Column(String(100), primary_key=True, index=True)
+    room_id = Column(Integer, ForeignKey("rooms.id", ondelete="CASCADE"), nullable=False, index=True)
+    device_type = Column(SQLEnum(IoTDeviceType), nullable=False)
+    mode = Column(SQLEnum(IoTDeviceMode), default=IoTDeviceMode.SIMULATED)
+    status = Column(SQLEnum(IoTDeviceStatus), default=IoTDeviceStatus.OFFLINE)
+    last_seen = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    
+    room = relationship("Room", back_populates="devices")
+    
+    def __repr__(self):
+        return f"<IoTDevice {self.id} (room={self.room_id})>"

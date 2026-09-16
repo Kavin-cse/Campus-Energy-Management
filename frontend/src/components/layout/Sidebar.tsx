@@ -1,15 +1,20 @@
 import { NavLink, useLocation } from 'react-router-dom'
 import {
-  LayoutDashboard, Building2, PlusCircle, BarChart3, Brain, Settings, X, Zap,
+  LayoutDashboard, MonitorPlay, Settings2, CircuitBoard, Building2,
+  FileSpreadsheet, BarChart3, Users, Lightbulb, Settings, X, Zap,
 } from 'lucide-react'
 
 const NAV_ITEMS = [
-  { to: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { to: '/rooms', label: 'Rooms & Labs', icon: Building2 },
-  { to: '/data-entry', label: 'Data Entry', icon: PlusCircle },
-  { to: '/analytics', label: 'Analytics', icon: BarChart3 },
-  { to: '/ai-insights', label: 'AI Insights', icon: Brain },
-  { to: '/settings', label: 'Settings', icon: Settings },
+  { icon: LayoutDashboard, label: 'Dashboard', to: '/' },
+  { icon: MonitorPlay, label: 'Live IoT Monitor', to: '/iot-monitor' },
+  { icon: Settings2, label: 'IoT Simulator', to: '/iot-simulator' },
+  { icon: CircuitBoard, label: 'Device Management', to: '/iot-devices' },
+  { icon: Building2, label: 'Rooms', to: '/rooms' },
+  { icon: FileSpreadsheet, label: 'Manual Data Entry', to: '/data-entry' },
+  { icon: BarChart3, label: 'Analytics', to: '/analytics' },
+  { icon: Users, label: 'Occupancy Analytics', to: '/occupancy' },
+  { icon: Lightbulb, label: 'AI Insights', to: '/ai-insights' },
+  { icon: Settings, label: 'Settings', to: '/settings' },
 ]
 
 interface SidebarProps {

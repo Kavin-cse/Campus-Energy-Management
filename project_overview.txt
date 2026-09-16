@@ -1,0 +1,62 @@
+Campus Energy Advisor - Project Overview
+
+The Campus Energy Advisor is a full-stack web application designed to monitor and optimize electricity consumption across university classrooms and laboratories. It tracks energy usage, compares it against room occupancy and schedules, and uses an AI analysis engine to generate actionable recommendations for reducing energy waste.
+
+We are currently in the process of upgrading the system to support real-time IoT hardware (ESP32 sensors and lab cameras) via Firebase.
+
+Technology Stack
+----------------
+Frontend (React + Vite)
+- Framework: React 18, TypeScript, Vite
+- Styling: Tailwind CSS, lucide-react for icons, custom UI components
+- Routing: React Router (react-router-dom)
+- Data Visualization: Recharts for energy and occupancy trend graphs
+- Location: /frontend/
+
+Backend (Python + FastAPI)
+- Framework: FastAPI, Uvicorn
+- Database: SQLite (campus_energy.db) using SQLAlchemy ORM
+- Validation: Pydantic for request/response schemas
+- Data Analysis: pandas, numpy, scikit-learn for anomaly detection and energy scoring
+- New IoT Layer: firebase-admin for syncing live device data
+- Location: /backend/
+
+System Architecture
+-------------------
+1. Data Models (backend/app/models.py)
+The system revolves around several core entities in the SQL database:
+- Room: Represents a physical space (Classroom, Computer Lab, etc.) with attributes like capacity and operating hours.
+- ElectricityReading: Stores historical daily energy consumption and manual occupancy data.
+- Recommendation: Stores AI-generated alerts (e.g., "Idle Consumption", "Off-Hours Usage") assigned to specific rooms.
+- Settings: Global configuration like electricity tariff (INR/kWh) and threshold variables for the AI engine.
+- IoTDevice (New): Maps hardware devices (ESP32, Lab Cameras) to specific rooms.
+
+2. AI Analysis Engine (backend/app/services/ai_service.py)
+This is the "brain" of the application. It runs batch or on-demand analysis on the reading data to detect waste patterns:
+- Empty Room Waste: Flags energy consumed when a room is unoccupied.
+- Off-Hours Consumption: Detects energy used outside the room's scheduled operating hours.
+- Unusual Spikes: Uses statistical mean/standard deviation to identify anomalous power usage.
+- Repeated Waste: Elevates the priority of alerts if a room consistently wastes energy over multiple days.
+
+3. Frontend Pages (frontend/src/pages/)
+The UI is divided into several clear views:
+- DashboardPage: High-level campus summary, active alerts, and top energy-wasting rooms.
+- RoomsPage & RoomDetailPage: Detailed metrics, charts, and configurations for individual spaces.
+- DataEntryPage: For manual input of daily energy readings and CSV uploads (legacy system).
+- AnalyticsPage: Deep-dive graphs comparing peak hours, occupancy vs. energy, and daily trends.
+- AIInsightsPage: A dedicated view to review, accept, or resolve the AI-generated recommendations.
+- SettingsPage: Campus-wide configuration (tariffs, thresholds).
+
+4. IoT & Firebase Integration (In Progress)
+To move from manual daily data entry to live monitoring, we are implementing an IoT layer:
+- Sensors: Simulated ESP32 devices combining PIR (motion) and Ultrasonic (entry/exit) sensors for classrooms, and computer vision (OpenCV) for lab occupancy.
+- Cloud Broker: Firebase Realtime Database acts as the intermediate layer to handle the high-frequency sensor payloads.
+- Ingestion (iot_service.py): The backend will ingest payloads, calculate accurate occupancy (using debounce logic), write to Firebase, and sync a unified reading back to the legacy database for the AI engine.
+
+Next Steps in Development
+-------------------------
+Following the implementation plan, we are currently adding:
+1. The new IoT backend API routes (/api/iot/*).
+2. The Frontend Firebase client initialization.
+3. The IoTSimulatorPage to generate fake hardware readings for demonstration purposes.
+4. The IoTMonitoringPage to view the live dashboard stream.

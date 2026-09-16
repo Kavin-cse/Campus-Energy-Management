@@ -78,8 +78,13 @@ class AIAnalysisService:
         os_ = room.operating_start.hour + room.operating_start.minute / 60
         oe = room.operating_end.hour + room.operating_end.minute / 60
         td = re_ - rs
+        
+        # If it's an instantaneous reading from IoT
         if td <= 0:
+            if rs < os_ or re_ > oe:
+                return reading.energy_kwh
             return 0.0
+            
         oh = 0.0
         if rs < os_:
             oh += min(os_, re_) - rs

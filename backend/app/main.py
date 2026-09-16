@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .database import init_db
-from .routes import rooms, readings, dashboard, analytics, ai, settings
+from .routes import rooms, readings, dashboard, analytics, ai, settings, iot
 
 app = FastAPI(
     title="Campus Energy Advisor API",
@@ -31,6 +31,7 @@ app.include_router(dashboard.router, prefix="/api")
 app.include_router(analytics.router, prefix="/api")
 app.include_router(ai.router, prefix="/api")
 app.include_router(settings.router, prefix="/api")
+app.include_router(iot.router, prefix="/api")
 
 if __name__ == "__main__":
     import uvicorn

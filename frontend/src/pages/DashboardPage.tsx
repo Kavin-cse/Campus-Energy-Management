@@ -1,4 +1,4 @@
-import { Zap, TrendingDown, IndianRupee, Building2, AlertTriangle, ArrowRight } from 'lucide-react'
+import { Zap, TrendingDown, IndianRupee, Building2, AlertTriangle, ArrowRight, Wifi } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { Card, StatCard, Spinner, Badge } from '@/components/ui'
 import { ConsumptionTrendChart, RoomBreakdownChart } from '@/components/charts'
@@ -35,6 +35,25 @@ export function DashboardPage() {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Live IoT Overview */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full text-blue-600 dark:text-blue-400">
+             <Wifi className="w-6 h-6" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Live IoT Monitoring Active</h3>
+            <p className="text-sm text-gray-500">Real-time occupancy and energy streaming via Firebase</p>
+          </div>
+        </div>
+        <button 
+          onClick={() => navigate('/iot-monitor')}
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+        >
+          View Live Feed
+        </button>
       </div>
 
       {/* Stats Grid */}
